@@ -19,7 +19,7 @@ export default Main;
 /* <h1 className="text-2xl">Hi am taha</h1>
 <div className="flex flex-col gap-4">
   <div className="flex  gap-3">
-    <span>📆</span>
+    <span>📆</span
     <span>Date</span> <span>21/03/2002</span>
   </div>
   <div className="flex gap-3">

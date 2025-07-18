@@ -10,7 +10,7 @@ const Create = ({ isCreating, setIsCreating }: CreatingOr) => {
     <div className="flex flex-col gap-3">
       <div className="flex  justify-between items-center">
         <div className="font-bold text-2xl"> Noty</div>
-        <p onClick={() => setisSearching(!isSearching)} className="text-[25px]">
+        <p onClick={() => setisSearching(!isSearching)} className="text-[25px]"> 
           🔍
         </p>
       </div>

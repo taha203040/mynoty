@@ -2,14 +2,22 @@
 import React from "react";
 import CreateNote from "./CreateNote";
 import Default from "./Default";
+import ShowNote from "./ShowNote";
 interface Prop {
   isCreating: boolean;
+  isClicked?: boolean;
+  NoteId?: any;
 }
-const Main = ({ isCreating }: Prop) => {
+const Main = ({ isCreating, isClicked, NoteId }: Prop) => {
   return (
     <section className="bg-blue-400 p-8 gap-5 w-3/5 h-screen flex flex-col">
-      {isCreating && <CreateNote />}
-      {!isCreating && <Default />}
+      {isCreating ? (
+        <CreateNote />
+      ) : isClicked && NoteId ? (
+        <ShowNote noteId={NoteId} />
+      ) : (
+        <Default />
+      )}
     </section>
   );
 };

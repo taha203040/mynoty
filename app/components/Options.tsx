@@ -1,15 +1,31 @@
+import { getNotes } from "@/utils";
 import React from "react";
-
+import { useEffect, useState } from "react";
+type Note = {
+  Subject: string;
+  folder?: string;
+  id: any;
+};
 export const Options = () => {
+  const [options, setoptions] = useState<Note[]>([]);
+  useEffect(() => {
+    const HandleNotes = async () => {
+      try {
+        const res = await getNotes();
+        setoptions(res);
+      } catch (err) {
+        console.log(err || "failed to fetch data");
+      }
+    };
+    HandleNotes();
+  }, []);
+
   return (
     <article className="flex flex-col gap-2">
       <p className="text-sm">Recent</p>
-      <div className="class">My New Folder </div>
-      <div className="class">ُPersonal</div>
-      <div className="class">Work </div>
-      <div className="class">Travel</div>
-      <div>Events</div>
-      <div>Finance</div>
+      {options.map(({ Subject, folder, id }) => (
+        <h1 key={id}>{Subject}</h1>
+      ))}
     </article>
   );
 };

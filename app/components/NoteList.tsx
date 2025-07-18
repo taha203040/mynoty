@@ -5,17 +5,25 @@ import { useState } from "react";
 type Note = {
   Subject: string;
   Text: string;
-  id :string
+  id: string;
 };
-export const NoteList = () => {
+interface Props {
+  setIsClicked: (val: boolean) => void;
+  isClicked: boolean;
+  setNoteId: (val: any) => void;
+}
+export const NoteList = ({ isClicked, setIsClicked, setNoteId }: Props) => {
   const [notes, setnotes] = useState<Note[]>([]);
+
   useEffect(() => {
     const fetchNotes = async () => {
       try {
         const res = await getNotes();
         setnotes(res);
-        console.log(res);
-      } catch (err) {}
+        // console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchNotes();
   }, []);
@@ -23,8 +31,15 @@ export const NoteList = () => {
     <article className="w-1/5 bg-amber-200 h-full p-3 flex flex-col gap-4">
       <div className="gap-3 flex flex-col">
         <p>Personal</p>
-        {notes.map(({ Subject, Text , id }) => (
-          <NoteCmp key={id} Subject={Subject} text={Text} />
+        {notes.map(({ Subject, Text, id }) => (
+          <NoteCmp
+            isClicked={isClicked}
+            setIsClicked={setIsClicked}
+            key={id}
+            Subject={Subject}
+            text={Text}
+            onSelectNote={() => setNoteId(id)}
+          />
         ))}
       </div>
     </article>

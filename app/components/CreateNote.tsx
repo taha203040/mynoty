@@ -43,7 +43,6 @@ const CreateNote = () => {
       />
     </section>
   );
-  
 };
 
 export default CreateNote;

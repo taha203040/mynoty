@@ -2,6 +2,14 @@ import { createSupabaseClient } from "@/lib/Supabase";
 interface GetNoteId {
     noteId: string
 }
+interface updateData {
+    Subject: string
+    Text: string
+    noteId: string
+}
+interface note {
+    noteId: string
+}
 const supabase = await createSupabaseClient()
 
 export const createNote = async (inputData: {
@@ -38,4 +46,24 @@ export const getNoteById = async ({ noteId }: GetNoteId) => {
     }
     //@ts-ignore
     return data[0]
+}
+export const updateNoteById = async ({ noteId, Subject, Text }: updateData) => {
+    const { data, error } = await supabase.from("Notes").update({ Subject, Text }).eq("id", noteId).select("*")
+    if (!data || error) {
+        console.log(error)
+    }
+    // @ts-ignore
+    return data[0]
+}
+
+
+
+
+
+export const deleteNote = async ({ noteId }: note) => {
+    const { data, error } = await supabase.from("Notes").delete().eq("id", noteId)
+    if (!data || error) {
+        console.log(error)
+    }
+    return data
 }

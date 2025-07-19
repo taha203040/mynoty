@@ -1,4 +1,4 @@
-import { getNoteById } from "@/utils";
+import { getNoteById, updateNoteById } from "@/utils";
 import { useState, useEffect } from "react";
 interface prop {
   noteId: string;
@@ -22,7 +22,6 @@ const ShowNote = ({ noteId }: prop) => {
           setContent(res.Text);
         }
         console.log("hi subject", res.Subject);
-
         console.log("hi from ", res.Text);
         console.log(res);
       } catch (err) {
@@ -32,6 +31,27 @@ const ShowNote = ({ noteId }: prop) => {
 
     handlegetData();
   }, []);
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      const handleUpdate = async () => {
+        try {
+          if (content.trim() || title.trim()) {
+            setContent(content);
+            setSubject(title);
+          }
+          const res = await updateNoteById({
+            noteId: noteId,
+            Subject: title,
+            Text: content,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      handleUpdate();
+    }, 2000);
+    return () => clearTimeout(debounce);
+  }, [title, content]);
 
   return (
     <section className="bg-blue-400 p-8 gap-5 w-3/5 h-screen flex flex-col">

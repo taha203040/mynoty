@@ -6,11 +6,15 @@ import { useState } from "react";
 export default function Home() {
   const [isCreating, setIsCreating] = useState(false);
   const [isClicked, setisClicked] = useState(false);
-  const  [noteID , setNoteId] =useState<string | null>(null)
+  const [noteID, setNoteId] = useState<string | null>(null);
   return (
     <div className="w-full h-screen flex">
       <SideBar isCreating={isCreating} setIsCreating={setIsCreating} />
-      <NoteList setNoteId={setNoteId} isClicked={isClicked} setIsClicked={setisClicked} />
+      <NoteList 
+        setNoteId={setNoteId}
+        isClicked={isClicked}
+        setIsClicked={setisClicked}
+      />
       <Main NoteId={noteID} isCreating={isCreating} isClicked={isClicked} />
     </div>
   );

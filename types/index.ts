@@ -1,5 +1,5 @@
 interface NotesData {
-    Folders :string 
-    Subject :string 
-    
+    Folders: string
+    Subject: string
+
 }

@@ -10,7 +10,7 @@ interface Prop {
 }
 const Main = ({ isCreating, isClicked, NoteId }: Prop) => {
   return (
-    <section className="bg-blue-400 p-8 gap-5 w-3/5 h-screen flex flex-col">
+    <section className="bg-[#181818] p-8 gap-5 w-3/5 h-screen text-white flex flex-col">
       {isCreating ? (
         <CreateNote />
       ) : isClicked && NoteId ? (

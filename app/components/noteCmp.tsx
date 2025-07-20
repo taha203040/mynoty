@@ -17,20 +17,20 @@ export const NoteCmp = ({
 }: PropsNote) => {
   const shortDate =
     created_At.length > 10 ? created_At.slice(0, 10) : created_At;
-  const shortText = text.length > 40 ? text.slice(0, 40) : text;
-
+  const shortText = text.length > 30 ? text.slice(0, 20) : text;
+  const shortSubject = Subject.length > 30 ? Subject.slice(0, 15) : Subject;
   return (
     <article
       onClick={() => {
         setIsClicked(!isClicked);
         onSelectNote(); // 👈 استدعاء الدالة المرسلة
       }}
-      className=" flex gap-1 flex-col max-w-3xs bg-amber-700 p-3 rounded"
+      className=" flex gap-1 h-[70px] flex-col text-white max-w-3xs bg-[#232323] p-3 rounded"
     >
-      <h3>{Subject}</h3>
+      <h3>{shortSubject}</h3>
 
-      <div className="text-xs ">
-        <span>{shortDate} hi</span>
+      <div className="text-xs">
+        <span>{shortDate}</span>
         <span className="mx-4">{shortText}</span>
       </div>
     </article>

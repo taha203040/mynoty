@@ -24,7 +24,7 @@ const CreateNote = () => {
   }, [content, subject]);
 
   return (
-    <section className="bg-blue-400 p-8 gap-5 w-3/5 h-screen flex flex-col">
+    <section className="bg-[#181818] p-8 gap-5 w-3/5 h-screen flex flex-col">
       <div className="flex flex-col gap-4">
         <input
           onChange={(e) => setSubject(e.target.value)}

@@ -30,9 +30,9 @@ export const NoteList = ({ isClicked, setIsClicked, setNoteId }: Props) => {
     fetchNotes();
   }, []);
   return (
-    <article className="w-1/5 bg-amber-200 h-full p-3 flex flex-col gap-4">
+    <article className="w-1/5 overflow-y-auto  bg-[#1c1c1c] h-full justify-center flex flex-col p-7">
       <div className="gap-3 flex flex-col">
-        <p>Personal</p>
+        <p className="text-[#fcfcfc]">Personal</p>
         {notes.map(({ Subject, Text, id, created_at }) => (
           <NoteCmp
             created_At={created_at}

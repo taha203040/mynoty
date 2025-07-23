@@ -1,6 +1,5 @@
 // "use server"
 import React, { useEffect } from "react";
-import { NoteCmp } from "./noteCmp";
 import { useState } from "react";
 // import { getnotes } from "@/utils";
 type Note = {
@@ -35,10 +34,6 @@ export const NoteList = ({ isClicked, setIsClicked, setNoteId }: Props) => {
       <p className="text-[#fcfcfc] py-5 font-bold text-xl">Personal</p>
 
       <div className="gap-3 flex flex-col">
-        
-        
-        
-        
         {/* {notes.map(({ Subject, Text, id, created_at }) => (
           <NoteCmp
             created_At={created_at}

@@ -11,9 +11,7 @@ export default function Home() {
     <div className="w-full h-screen flex">
       <SideBar isCreating={isCreating} setIsCreating={setIsCreating} />
       <NoteList 
-        setNoteId={setNoteId}
-        isClicked={isClicked}
-        setIsClicked={setisClicked}
+      
       />
       <Main NoteId={noteID} isCreating={isCreating} isClicked={isClicked} />
     </div>

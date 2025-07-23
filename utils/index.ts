@@ -82,14 +82,13 @@ export const createFolder = async ({ fldr }: fldr) => {
     return data
 }
 
-export const getFolders = async () => {
+export const getFolders = async ({ userid }: { userid: string }) => {
     const supabase = await createSupabaseClient()
-
-    const { data, error } = await supabase.from("folders").select("*")
+    const { data, error } = await supabase.from("folders").select("*").eq("user_id", userid)
+    console.log(data)
     if (!data?.length || error) {
         console.log(error)
         return null
     }
-    // @ts-ignore
     return data
 }

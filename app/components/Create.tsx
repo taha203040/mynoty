@@ -1,5 +1,8 @@
 "use client";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
 export interface CreatingOr {
   isCreating: boolean;
   setIsCreating: (val: boolean) => void;
@@ -11,13 +14,13 @@ const Create = ({ isCreating, setIsCreating }: CreatingOr) => {
       <div className="flex  justify-between items-center">
         <div className="font-bold text-2xl text-[#fcfcfc]"> Noty</div>
         <p onClick={() => setisSearching(!isSearching)} className="text-[25px]">
-          🔍
+          <FontAwesomeIcon icon={faSearch} className="text-[#fcfcfc]" />
         </p>
       </div>
       {isSearching && (
         <input
           type="text"
-          className="w-full text-[#fcfcfc] bg-[#232323] p-3 rounded outline-none text-center"
+          className="w-full text-[#fcfcfc] bg-[#232323] p-3 transition-all rounded outline-none text-center"
         />
       )}
       {!isSearching && (

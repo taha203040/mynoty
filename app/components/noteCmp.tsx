@@ -17,7 +17,7 @@ export const NoteCmp = ({
 }: PropsNote) => {
   const shortDate =
     created_At.length > 10 ? created_At.slice(0, 10) : created_At;
-  const shortText = text.length > 30 ? text.slice(0, 20) : text;
+  const shortText = text.length > 20 ? text.slice(0, 10) : text;
   const shortSubject = Subject.length > 30 ? Subject.slice(0, 15) : Subject;
   return (
     <article

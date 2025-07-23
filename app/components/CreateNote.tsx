@@ -8,6 +8,7 @@ const CreateNote = () => {
       const res = await createNote({
         Subject: subject,
         Text: content,
+        folderid: "",
       });
       console.log(res);
     } catch (err) {
@@ -35,7 +36,8 @@ const CreateNote = () => {
         <hr className="bg-gray-500" />
       </div>
       <textarea
-        className="outline-none scroll-m-3.5"
+        className="outline-none scroll-m-3.5 w-[350px] h-[400px]
+        resize-none"
         onChange={(e) => setContent(e.target.value)}
         name=""
         id=""

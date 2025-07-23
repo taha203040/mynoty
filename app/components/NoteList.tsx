@@ -1,7 +1,8 @@
+// "use server"
 import React, { useEffect } from "react";
 import { NoteCmp } from "./noteCmp";
-import { getNotes } from "@/utils";
 import { useState } from "react";
+// import { getnotes } from "@/utils";
 type Note = {
   Subject: string;
   Text: string;
@@ -20,20 +21,25 @@ export const NoteList = ({ isClicked, setIsClicked, setNoteId }: Props) => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await getNotes();
-        setnotes(res);
-        console.log(res);
+        // const res = await getnotes();
+        // setnotes(res);
+        // console.log(res);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchNotes();
+    // fetchNotes();
   }, []);
   return (
-    <article className="w-1/5 overflow-y-auto  bg-[#1c1c1c] h-full justify-center flex flex-col p-7">
+    <article className="w-1/5 overflow-y-auto bg-[#1c1c1c] h-full justify-center flex flex-col p-8 ">
+      <p className="text-[#fcfcfc] py-5 font-bold text-xl">Personal</p>
+
       <div className="gap-3 flex flex-col">
-        <p className="text-[#fcfcfc]">Personal</p>
-        {notes.map(({ Subject, Text, id, created_at }) => (
+        
+        
+        
+        
+        {/* {notes.map(({ Subject, Text, id, created_at }) => (
           <NoteCmp
             created_At={created_at}
             isClicked={isClicked}
@@ -43,7 +49,7 @@ export const NoteList = ({ isClicked, setIsClicked, setNoteId }: Props) => {
             text={Text}
             onSelectNote={() => setNoteId(id)}
           />
-        ))}
+        ))} */}
       </div>
     </article>
   );

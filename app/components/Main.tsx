@@ -7,12 +7,13 @@ interface Prop {
   isCreating: boolean;
   isClicked?: boolean;
   NoteId?: any;
+  folderId: string;
 }
-const Main = ({ isCreating, isClicked, NoteId }: Prop) => {
+const Main = ({ isCreating, isClicked, NoteId, folderId }: Prop) => {
   return (
     <section className="bg-[#181818] p-8 gap-5 w-3/5 h-screen text-white flex flex-col">
       {isCreating ? (
-        <CreateNote />
+        <CreateNote folderid={folderId} />
       ) : isClicked && NoteId ? (
         <ShowNote noteId={NoteId} />
       ) : (

@@ -7,13 +7,22 @@ export default function Home() {
   const [isCreating, setIsCreating] = useState(false);
   const [isClicked, setisClicked] = useState(false);
   const [noteID, setNoteId] = useState<string | null>(null);
+  const [folderid, setId] = useState("");
+
   return (
     <div className="w-full h-screen flex">
-      <SideBar isCreating={isCreating} setIsCreating={setIsCreating} />
-      <NoteList 
-      
+      <SideBar
+        setId={setId}
+        isCreating={isCreating}
+        setIsCreating={setIsCreating}
       />
-      <Main NoteId={noteID} isCreating={isCreating} isClicked={isClicked} />
+      <NoteList folder_id={folderid} />
+      <Main
+        folderId={folderid}
+        NoteId={noteID}
+        isCreating={isCreating}
+        isClicked={isClicked}
+      />
     </div>
   );
 }

@@ -12,6 +12,7 @@ interface note {
 interface folder {
     folder?: string
     folderid?: string
+    userid?: string
 }
 interface NotesData {
     Folders: string

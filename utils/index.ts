@@ -4,9 +4,10 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 
 
 export const createNote = async (inputData: {
-    Subject: string;
-    Text: string;
-    folderid: string
+    title: string;
+    content: string;
+    folder_id: string;
+    user_id: string;
 }) => {
     const supabase = await createSupabaseClient()
 
@@ -21,10 +22,13 @@ export const createNote = async (inputData: {
     return data[0]; // عادة Supabase يعيد مصفوفة فيها السجل الجديد
 };
 
-export const getnotes = async ({ folderid }: folder) => {
+export const getnotes = async ({ folderid, userid }: folder) => {
     const supabase = await createSupabaseClient()
-
-    const { data, error } = await supabase.from('notes').select().eq("folderid", folderid).order('created_at', { ascending: false })
+    const user = await currentUser()
+    if (!user) {
+        throw new Error("User not authenticated");
+    }
+    const { data, error } = await supabase.from('notes').select().eq("folder_id", folderid).eq("user_id", userid).order('created_at', { ascending: false })
     if (!data || error) {
         throw new Error(error?.message || 'Failed to get data')
     }

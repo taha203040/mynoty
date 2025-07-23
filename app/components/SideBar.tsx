@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Option1 } from "./Options";
 import { Option3 } from "./Option3";
 import { useUser } from "@clerk/nextjs";
-import { getFolders } from "@/utils";
+import { createFolder, getFolders } from "@/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFolder,
@@ -15,7 +15,12 @@ type folders = {
   name: string;
   id: string;
 };
-const SideBar = ({ isCreating, setIsCreating }: CreatingOr) => {
+interface SideBarProps {
+  isCreating: boolean;
+  setIsCreating: (val: boolean) => void;
+  setId: (id: string) => void;
+}
+const SideBar = ({ isCreating, setIsCreating, setId }: SideBarProps) => {
   // folder part code
   const [isSearch, setisSearch] = useState(false);
   const [foldr, setfolder] = useState("");
@@ -65,54 +70,51 @@ const SideBar = ({ isCreating, setIsCreating }: CreatingOr) => {
       <Create isCreating={isCreating} setIsCreating={setIsCreating} />{" "}
       {/* Create component for creating new notes */}
       <Option1 />
-      {/* <div className="flex flex-col h-full"> */}
-        {" "}
-        {}
-        <article className="h-1/2 w-full  text-[#fcfcfc]">
-          {/**
-           * Folder Section
-           */}
-          <div className="flex  justify-between">
-            <span>Folders </span>
-            {isSearch && (
-              <span>
-                <FontAwesomeIcon icon={faFolderOpen} />
-                <input
-                  type="text"
-                  className="border border-b-gray-300 rounded"
-                  onChange={(e) => setfolder(e.target.value)}
-                />
-              </span>
-            )}
+      <article className="h-1/2 w-full  text-[#fcfcfc]">
+        {/**
+         * Folder Section
+         */}
+        <div className="flex  justify-between">
+          <span>Folders </span>
+          {isSearch && (
             <span>
-              <FontAwesomeIcon
-                icon={faFolderPlus}
-                onClick={() => setisSearch(!isSearch)}
+              <FontAwesomeIcon icon={faFolderOpen} />
+              <input
+                type="text"
+                className="border border-b-gray-300 rounded"
+                onChange={(e) => setfolder(e.target.value)}
               />
             </span>
-          </div>
-          <div className="text-amber-50 w-full overflow-auto flex flex-col">
-            {folders.map((folder, i) => (
-              <span
-                className="hover:bg-[#232323] p-1"
-                onClick={() =>
-                  setOpenFolderId(openFolderId === folder.id ? null : folder.id)
-                }
-                key={i}
-                id={folder.id}
-              >
-                {openFolderId === folder.id ? (
-                  <FontAwesomeIcon icon={faFolderOpen} className="mx-1.5" />
-                ) : (
-                  <FontAwesomeIcon icon={faFolder} className="mx-1.5" />
-                )}
-                {folder.name}
-              </span>
-            ))}
-          </div>
-        </article>{" "}
-        <Option3 />
-      {/* </div> */}
+          )}
+          <span>
+            <FontAwesomeIcon
+              icon={faFolderPlus}
+              onClick={() => setisSearch(!isSearch)}
+            />
+          </span>
+        </div>
+        <div className="text-amber-50 w-full overflow-auto flex flex-col">
+          {folders.map((folder, i) => (
+            <span
+              className="hover:bg-[#232323] p-1"
+              onClick={() => {
+                setOpenFolderId(openFolderId === folder.id ? null : folder.id);
+                setId(folder.id); // Set the folder ID when clicked
+              }}
+              key={i}
+              id={folder.id}
+            >
+              {openFolderId === folder.id ? (
+                <FontAwesomeIcon icon={faFolderOpen} className="mx-1.5" />
+              ) : (
+                <FontAwesomeIcon icon={faFolder} className="mx-1.5" />
+              )}
+              {folder.name}
+            </span>
+          ))}
+        </div>
+      </article>{" "}
+      <Option3 />
     </section>
   );
 };

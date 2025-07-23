@@ -1,14 +1,21 @@
 import { createNote } from "@/utils";
+import { useUser } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
-const CreateNote = () => {
+type Folder = {
+  folderid: string;
+};
+const CreateNote = ({ folderid }: Folder) => {
   const [content, setContent] = useState("");
   const [subject, setSubject] = useState("");
+  const { user } = useUser();
+  if (!user) throw new Error("User not found");
   const handleCreate = async () => {
     try {
       const res = await createNote({
-        Subject: subject,
-        Text: content,
-        folderid: "",
+        title: subject,
+        content: content,
+        folder_id: folderid,
+        user_id: user?.id ,
       });
       console.log(res);
     } catch (err) {

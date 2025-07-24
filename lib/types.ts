@@ -2,8 +2,8 @@ interface GetNoteId {
     noteId: string
 }
 interface updateData {
-    Subject: string
-    Text: string
+    title: string
+    content: string
     noteId: string
 }
 interface note {

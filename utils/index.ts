@@ -24,11 +24,8 @@ export const createNote = async (inputData: {
 
 export const getnotes = async ({ folderid, userid }: folder) => {
     const supabase = await createSupabaseClient()
-    const user = await currentUser()
-    if (!user) {
-        throw new Error("User not authenticated");
-    }
-    const { data, error } = await supabase.from('notes').select().eq("folder_id", folderid).eq("user_id", userid).order('created_at', { ascending: false })
+
+    const { data, error } = await supabase.from('notes').select().eq('folder_id', folderid).eq('user_id', userid).order('created_at', { ascending: false })
     if (!data || error) {
         throw new Error(error?.message || 'Failed to get data')
     }
@@ -46,10 +43,10 @@ export const getNoteById = async ({ noteId }: GetNoteId) => {
     return data[0]
 }
 
-export const updateNoteById = async ({ noteId, Subject, Text }: updateData) => {
+export const updateNoteById = async ({ noteId, content, title }: updateData) => {
     const supabase = await createSupabaseClient()
 
-    const { data, error } = await supabase.from("notes").update({ Subject, Text }).eq("id", noteId).select("*")
+    const { data, error } = await supabase.from("notes").update({ title, content }).eq("id", noteId).select("*")
     if (!data || error) {
         console.log(error)
     }
@@ -94,5 +91,43 @@ export const getFolders = async ({ userid }: { userid: string }) => {
         console.log(error)
         return null
     }
+    return data
+}
+
+// Notes Options 
+export const updateFavorite = async ({ noteId, is_favorite }: { noteId: string; is_favorite: boolean }) => {
+    const supabase = await createSupabaseClient()
+    const { data, error } = await supabase.from('notes').update({ is_favorite }).eq("id", noteId).select("*")
+    if (!data || error) throw new Error(error.message)
+    return data[0]
+}
+export const updateArchived = async ({ noteId, is_archived }: { noteId: string; is_archived: boolean }) => {
+    const supabase = await createSupabaseClient()
+    const { data, error } = await supabase.from('notes').update({ is_archived }).eq("id", noteId).select("*")
+    if (!data || error) throw new Error(error.message)
+    return data[0]
+}
+export const updateTrach = async ({ noteId, is_trashed }: { noteId: string; is_trashed: boolean }) => {
+    const supabase = await createSupabaseClient()
+    const { data, error } = await supabase.from('notes').update({ is_trashed }).eq("id", noteId).select("*")
+    if (!data || error) throw new Error(error.message)
+    return data[0]
+}
+export const listFavorites = async () => {
+    const supabase = await createSupabaseClient()
+    const { data, error } = await supabase.from('notes').select("*").eq('is_favorite', true)
+    if (!data || error) throw new Error(error.message)
+    return data
+}
+export const listArchives = async () => {
+    const supabase = await createSupabaseClient()
+    const { data, error } = await supabase.from('notes').select("*").eq('is_archived', true)
+    if (!data || error) throw new Error(error.message)
+    return data[0]
+}
+export const listTrach = async () => {
+    const supabase = await createSupabaseClient()
+    const { data, error } = await supabase.from('notes').select("*").eq('is_trashed', true)
+    if (!data || error) throw new Error(error.message)
     return data
 }

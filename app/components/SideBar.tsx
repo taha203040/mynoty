@@ -2,14 +2,16 @@ import React from "react";
 import Create, { CreatingOr } from "./Create";
 import { useState, useEffect } from "react";
 import { Option1 } from "./Options";
-import { Option3 } from "./Option3";
 import { useUser } from "@clerk/nextjs";
 import { createFolder, getFolders } from "@/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faArchive,
   faFolder,
   faFolderOpen,
   faFolderPlus,
+  faStar,
+  faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 type folders = {
   name: string;
@@ -17,10 +19,34 @@ type folders = {
 };
 interface SideBarProps {
   isCreating: boolean;
+  isclicked?: boolean; // Optional prop for isclicked, not used in this component
+  isclick?: boolean; // Optional prop for isclick, not used in this component
   setIsCreating: (val: boolean) => void;
   setId: (id: string) => void;
+  setIsClick: (val: boolean) => void; // Added setIsClick prop
+  setisClicked: (val: boolean) => void; // Function to set isClicked state
+  setIsClickedArch: (val: boolean) => void;
+  setIsClickedFav: (val: boolean) => void;
+  setIsClickedTrach: (val: boolean) => void;
+  isClickedArch: boolean;
+  isClickedTrach: boolean;
+  isClickedFav: boolean;
 }
-const SideBar = ({ isCreating, setIsCreating, setId }: SideBarProps) => {
+const SideBar = ({
+  setIsClickedArch,
+  setIsClickedTrach,
+  setIsClickedFav,
+  setisClicked,
+  setIsCreating,
+  setId,
+  setIsClick,
+  isClickedTrach,
+  isClickedFav,
+  isClickedArch,
+  isCreating,
+  isclick,
+  isclicked,
+}: SideBarProps) => {
   // folder part code
   const [isSearch, setisSearch] = useState(false);
   const [foldr, setfolder] = useState("");
@@ -98,8 +124,14 @@ const SideBar = ({ isCreating, setIsCreating, setId }: SideBarProps) => {
             <span
               className="hover:bg-[#232323] p-1"
               onClick={() => {
+                if (isclicked || isclick) {
+                  setIsClick(false); // Reset isClick state when isclicked and isclick are true
+                  setisClicked(false); // Reset isClicked state when isclicked and isclick are true
+                }
                 setOpenFolderId(openFolderId === folder.id ? null : folder.id);
                 setId(folder.id); // Set the folder ID when clicked
+                setIsClick(!isclick); // Set isClick to true when a folder is clicked
+                setisClicked(!isclicked); // Set isClicked to true when a folder is clicked
               }}
               key={i}
               id={folder.id}
@@ -113,8 +145,23 @@ const SideBar = ({ isCreating, setIsCreating, setId }: SideBarProps) => {
             </span>
           ))}
         </div>
-      </article>{" "}
-      <Option3 />
+      </article>
+      <article className="h-1/3 my-3.5 gap-3 flex flex-col text-[#fcfcfc]">
+        <span>More</span>
+        <div className="flex flex-col gap-3">
+          <p onClick={() => setIsClickedFav(!isClickedFav)}>
+            <FontAwesomeIcon icon={faStar} className="mx-2" /> Favorites
+          </p>
+          <p onClick={() => setIsClickedArch(!isClickedArch)}>
+            {" "}
+            <FontAwesomeIcon className="mx-2" icon={faArchive} />
+            Archived
+          </p>
+          <p onClick={() => setIsClickedTrach(!isClickedTrach)}>
+            <FontAwesomeIcon className="mx-2" icon={faTrashCan} /> Trach
+          </p>
+        </div>
+      </article>
     </section>
   );
 };

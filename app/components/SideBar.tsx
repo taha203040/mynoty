@@ -61,8 +61,7 @@ const SideBar = ({
         try {
           // @ts-ignore
           const res = await createFolder({ fldr: foldr });
-          console.log(res);
-          console.log("hi", foldr);
+
           if (isMounted) console.log("Folder created successfully:", res);
         } catch (err) {
           console.log(err);
@@ -81,8 +80,7 @@ const SideBar = ({
     const getElements = async () => {
       try {
         const res = await getFolders({ userid: user?.id || "" });
-        console.log("user", user?.id);
-        console.log("Folders:", res);
+
         if (res) setfolders(res);
       } catch (err) {
         console.error("Error fetching folders:", err);
@@ -92,7 +90,7 @@ const SideBar = ({
   }, [user?.id]);
 
   return (
-    <section className="flex gap-8 w-1/5 h-full bg-[#181818] flex-col">
+    <section className="flex p-2 gap-8 w-1/5 h-full bg-[#181818] flex-col">
       <Create isCreating={isCreating} setIsCreating={setIsCreating} />{" "}
       {/* Create component for creating new notes */}
       <Option1 />
@@ -148,16 +146,24 @@ const SideBar = ({
       </article>
       <article className="h-1/3 my-3.5 gap-3 flex flex-col text-[#fcfcfc]">
         <span>More</span>
-        <div className="flex flex-col gap-3">
-          <p onClick={() => setIsClickedFav(!isClickedFav)}>
-            <FontAwesomeIcon icon={faStar} className="mx-2" /> Favorites
+        <div className="flex flex-col">
+          <p
+            onClick={() => setIsClickedFav(!isClickedFav)}
+            className="hover:bg-[#232323] transition-colors p-1"
+          >
+            <FontAwesomeIcon icon={faStar} className="mx-2 " /> Favorites
           </p>
-          <p onClick={() => setIsClickedArch(!isClickedArch)}>
-            {" "}
+          <p
+            onClick={() => setIsClickedArch(!isClickedArch)}
+            className="hover:bg-[#232323] transition-colors p-1"
+          >
             <FontAwesomeIcon className="mx-2" icon={faArchive} />
             Archived
           </p>
-          <p onClick={() => setIsClickedTrach(!isClickedTrach)}>
+          <p
+            onClick={() => setIsClickedTrach(!isClickedTrach)}
+            className="hover:bg-[#232323] transition-colors p-1"
+          >
             <FontAwesomeIcon className="mx-2" icon={faTrashCan} /> Trach
           </p>
         </div>

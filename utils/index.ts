@@ -1,6 +1,6 @@
 "use server";
 import { createSupabaseClient } from "@/lib/Supabase";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 
 export const createNote = async (inputData: {
@@ -39,8 +39,7 @@ export const getNoteById = async ({ noteId }: GetNoteId) => {
     if (!data || error) {
         console.log(error)
     }
-    //@ts-ignore
-    return data[0]
+    if (data) return data[0]
 }
 
 export const updateNoteById = async ({ noteId, content, title }: updateData) => {
@@ -78,7 +77,6 @@ export const createFolder = async ({ fldr }: fldr) => {
     if (!data || error) {
         console.log(error)
     }
-    console.log(data)
     // @ts-ignore
     return data
 }
@@ -86,7 +84,6 @@ export const createFolder = async ({ fldr }: fldr) => {
 export const getFolders = async ({ userid }: { userid: string }) => {
     const supabase = await createSupabaseClient()
     const { data, error } = await supabase.from("folders").select("*").eq("user_id", userid)
-    console.log(data)
     if (!data?.length || error) {
         console.log(error)
         return null
@@ -95,6 +92,20 @@ export const getFolders = async ({ userid }: { userid: string }) => {
 }
 
 // Notes Options 
+export const getFolder = async ({ folderid }: { folderid: string }) => {
+    if (!folderid || folderid.trim() === "") {
+        throw new Error("Invalid folder ID");
+    }
+    const supabase = await createSupabaseClient()
+    const { data, error } = await supabase.from('folders').select("id,name").eq('id', folderid)
+    if (!data || error) {
+        console.log(error, 'err')
+    }
+    if (data) {
+        console.log(data[0], 'data')
+        return data[0]
+    }
+}
 export const updateFavorite = async ({ noteId, is_favorite }: { noteId: string; is_favorite: boolean }) => {
     const supabase = await createSupabaseClient()
     const { data, error } = await supabase.from('notes').update({ is_favorite }).eq("id", noteId).select("*")

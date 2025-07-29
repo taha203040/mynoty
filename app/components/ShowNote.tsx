@@ -1,4 +1,14 @@
+import { BoldIcon } from "@/components/tiptap-icons/bold-icon";
+import { ItalicIcon } from "@/components/tiptap-icons/italic-icon";
+import { Button } from "@/components/tiptap-ui-primitive/button";
+import { Spacer } from "@/components/tiptap-ui-primitive/spacer";
 import {
+  Toolbar,
+  ToolbarGroup,
+  ToolbarSeparator,
+} from "@/components/tiptap-ui-primitive/toolbar";
+import {
+  getFolder,
   getNoteById,
   updateArchived,
   updateFavorite,
@@ -9,6 +19,7 @@ import {
   faArchive,
   faBars,
   faCalendar,
+  faFolder,
   faMarsAndVenus,
   faStar,
   faStarAndCrescent,
@@ -25,6 +36,7 @@ type Note = {
   content: string;
   id: string;
   created_at: string;
+  folder_id: string;
 };
 const ShowNote = ({ noteId }: prop) => {
   const [content, setContent] = useState("");
@@ -34,7 +46,8 @@ const ShowNote = ({ noteId }: prop) => {
   const [clicked, setclicked] = useState(false);
   const [isArch, setArch] = useState(false);
   const [isTrch, setTrch] = useState(false);
-
+  const [folder, setFolder] = useState("");
+  const [folderid, setFolderid] = useState("");
   const [isFav, setFav] = useState(false);
 
   useEffect(() => {
@@ -46,10 +59,9 @@ const ShowNote = ({ noteId }: prop) => {
           setSubject(res.title);
           setContent(res.content);
           setDate(res.created_at.slice(0, 10));
+          setFolderid(res.folder_id);
         }
-        console.log("hi subject", res.Subject);
-        console.log("hi from ", res.Text);
-        console.log(res);
+        console.log(folderid, "id");
       } catch (err) {
         console.log(err as Error);
       }
@@ -57,6 +69,33 @@ const ShowNote = ({ noteId }: prop) => {
 
     handlegetData();
   }, []);
+  useEffect(() => {
+    if (folderid) {
+      console.log(folderid, "updated folderid");
+    }
+  }, [folderid]);
+
+  useEffect(() => {
+    const handleFolder = async () => {
+      if (!folderid || folderid.trim() === "") {
+        console.warn("folderid is empty or invalid");
+        return;
+      }
+      try {
+        const res = await getFolder({ folderid });
+        if (res) {
+          setFolder(res.name);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    handleFolder();
+  }, [folderid]);
+  //
+  useEffect(() => {
+    if (folder) console.log(folder);
+  }, [folder]);
   useEffect(() => {
     const debounce = setTimeout(() => {
       const handleUpdate = async () => {
@@ -104,7 +143,6 @@ const ShowNote = ({ noteId }: prop) => {
             noteId: noteId,
             is_archived: isArch,
           });
-          console.log(res);
         } catch (err) {
           console.log(err);
         }
@@ -121,7 +159,6 @@ const ShowNote = ({ noteId }: prop) => {
             noteId: noteId,
             is_trashed: isTrch,
           });
-          console.log(res);
         } catch (err) {
           console.log(err);
         }
@@ -174,9 +211,39 @@ const ShowNote = ({ noteId }: prop) => {
 
       <div className="flex flex-col gap-4">
         <h1>
-          <FontAwesomeIcon className="mx-4" icon={faCalendar} /> {date}
+          <FontAwesomeIcon className="mx-4" icon={faCalendar} />
+          <span className="text-[15px] text-gray-600 mx-4">Date</span> {date}
         </h1>
-        <hr className="" />
+        <hr className="text-gray-700" />
+        <h1>
+          <FontAwesomeIcon className="mx-4" icon={faFolder} />
+          <span className="text-[15px] text-gray-600 mx-4">Folder</span>{" "}
+          {folder}
+        </h1>
+        <hr className="bg-gray-600" />
+        <Toolbar variant="fixed">
+          <ToolbarGroup>
+            <Button data-style="ghost">
+              <BoldIcon className="tiptap-button-icon" />
+            </Button>
+            <Button data-style="ghost">
+              <ItalicIcon className="tiptap-button-icon" />
+            </Button>
+          </ToolbarGroup>
+
+          <ToolbarSeparator />
+
+          <ToolbarGroup>
+            <Button data-style="ghost">Format</Button>
+          </ToolbarGroup>
+
+          <Spacer />
+
+          <ToolbarGroup>
+            <Button data-style="primary">Save</Button>
+          </ToolbarGroup>
+        </Toolbar>{" "}
+        <hr />
       </div>
       <textarea
         className="outline-none scroll-m-3.5 resize-none w-full h-full "

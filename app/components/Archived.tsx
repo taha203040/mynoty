@@ -16,9 +16,7 @@ const ArchivedP = () => {
         if (res) {
           setArchived(res);
         }
-        console.log(res);
       } catch (err) {
-        console.log(err);
       }
     };
     getArchived();
@@ -32,7 +30,7 @@ const ArchivedP = () => {
           <span>{note.content.slice(0, 10)}...</span>
           <span>{note.created_at.slice(0, 10)}</span>
         </div>
-      ))}{" "}
+      ))}
     </section>
   );
 };

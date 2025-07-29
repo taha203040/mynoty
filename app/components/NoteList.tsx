@@ -33,7 +33,6 @@ export const NoteList = ({
       try {
         const res = await getnotes({ folderid: folder_id, userid: user?.id });
         setnotes(res);
-        console.log(res);
       } catch (err) {
         console.log(err);
       }
@@ -44,9 +43,7 @@ export const NoteList = ({
   return (
     <>
       <article className="w-1/5 overflow-y-auto bg-[#1c1c1c] h-full flex flex-col relative p-8 ">
-        <p className="text-[#fcfcfc] py-5 font-bold text-xl  top-0">
-          Personal
-        </p>
+        <p className="text-[#fcfcfc] py-5 font-bold text-xl  top-0">Personal</p>
 
         <div className="gap-3 flex flex-col">
           {isClick &&
@@ -56,11 +53,12 @@ export const NoteList = ({
                 className="bg-[#232323] p-3 rounded-md text-[#fcfcfc] cursor-pointer hover:bg-[#2c2c2c] transition-all"
                 onClick={() => {
                   setNoteId(note.id); // Set the note ID when clicked
-                  console.log(`Note clicked: ${note.content}`);
                 }}
               >
-                <h3 className="text-lg font-semibold">{note.title}</h3>
-                <p className="text-sm">{note.content}...</p>
+                <h3 className="text-lg font-semibold">
+                  {note.title.slice(0, 10)}
+                </h3>
+                <p className="text-sm">{note.content.slice(0, 20)}...</p>
               </div>
             ))}
         </div>

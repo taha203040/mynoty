@@ -1,6 +1,7 @@
 import { createNote } from "@/utils";
 import { useUser } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
+import { Input, InputGroup } from "@/components/tiptap-ui-primitive/input";
 type Folder = {
   folderid: string;
 };
@@ -15,9 +16,8 @@ const CreateNote = ({ folderid }: Folder) => {
         title: subject,
         content: content,
         folder_id: folderid,
-        user_id: user?.id ,
+        user_id: user?.id,
       });
-      console.log(res);
     } catch (err) {
       console.log(err as string);
     }
@@ -32,6 +32,7 @@ const CreateNote = ({ folderid }: Folder) => {
   }, [content, subject]);
 
   return (
+    
     <section className="bg-[#181818] p-8 gap-5 w-3/5 h-screen flex flex-col">
       <div className="flex flex-col gap-4">
         <input

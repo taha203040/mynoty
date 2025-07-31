@@ -168,7 +168,7 @@ const ShowNote = ({ noteId }: prop) => {
     return () => clearTimeout(debonce);
   }, [isTrch]);
   return (
-    <section className=" w-full p-5 gap-5 h-screen flex flex-col">
+    <section className="w-full gap-5 h-screen flex flex-col">
       <div className="text-2xl flex justify-between">
         <span>{title}</span>
 
@@ -196,7 +196,7 @@ const ShowNote = ({ noteId }: prop) => {
             {" "}
             <FontAwesomeIcon icon={faArchive} className="mx-2" /> Archive
           </p>
-          <hr className="text-[#232323] font-bold" />
+          <hr className="border-[#333333]" />
           <p
             className="text-xs p-3 w-full hover:bg-[#232323]"
             onClick={() => setTrch(!isTrch)}
@@ -214,13 +214,13 @@ const ShowNote = ({ noteId }: prop) => {
           <FontAwesomeIcon className="mx-4" icon={faCalendar} />
           <span className="text-[15px] text-gray-600 mx-4">Date</span> {date}
         </h1>
-        <hr className="text-gray-700" />
+        <hr className="border-[#333333]" />
         <h1>
           <FontAwesomeIcon className="mx-4" icon={faFolder} />
-          <span className="text-[15px] text-gray-600 mx-4">Folder</span>{" "}
-          {folder}
+          <span className="text-[15px] text-gray-600 mx-4">Folder</span>
+          <span className="underline"> {folder}</span>{" "}
         </h1>
-        <hr className="bg-gray-600" />
+        <hr className="border-[#333333]" />
         <Toolbar variant="fixed">
           <ToolbarGroup>
             <Button data-style="ghost">
@@ -242,8 +242,8 @@ const ShowNote = ({ noteId }: prop) => {
           <ToolbarGroup>
             <Button data-style="primary">Save</Button>
           </ToolbarGroup>
-        </Toolbar>{" "}
-        <hr />
+        </Toolbar>
+        <hr className="border-[#333333]" />
       </div>
       <textarea
         className="outline-none scroll-m-3.5 resize-none w-full h-full "

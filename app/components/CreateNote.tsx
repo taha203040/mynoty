@@ -32,19 +32,18 @@ const CreateNote = ({ folderid }: Folder) => {
   }, [content, subject]);
 
   return (
-    
-    <section className="bg-[#181818] p-8 gap-5 w-3/5 h-screen flex flex-col">
-      <div className="flex flex-col gap-4">
+    <section className="bg-[#181818] p-8 gap-5 w-full h-screen flex flex-col">
+      <div className="flex flex-col gap-4 w-full">
         <input
           onChange={(e) => setSubject(e.target.value)}
           type="text"
           placeholder="Subject"
           className="w-full outline-none p-3 border-none "
         />
-        <hr className="bg-gray-500" />
+        <hr className="border-[#333333]" />
       </div>
       <textarea
-        className="outline-none scroll-m-3.5 w-[350px] h-[400px]
+        className="outline-none scroll-m-3.5 w-full overflow-auto h-full
         resize-none"
         onChange={(e) => setContent(e.target.value)}
         name=""

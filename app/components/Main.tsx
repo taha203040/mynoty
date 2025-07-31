@@ -25,7 +25,7 @@ const Main = ({
   isClickedTrach,
 }: Prop) => {
   return (
-    <section className="bg-[#181818] overflow-auto p-8 gap-5 w-3/5 h-screen text-white flex flex-col">
+    <section className="bg-[#181818] overflow-auto p-6 ap-5 w-3/5 h-screen text-white flex flex-col">
       {isCreating ? (
         <CreateNote folderid={folderId} />
       ) : isClicked && NoteId ? (

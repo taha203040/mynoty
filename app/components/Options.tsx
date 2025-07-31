@@ -8,5 +8,5 @@ type Note = {
   id: any;
 };
 export const Option1 = () => {
-  return <article className="h-1/4 text-[#fcfcfc] ">Recent</article>;
+  return <article className="h-1/4 text-[#fcfcfc] p-2">Recent</article>;
 };

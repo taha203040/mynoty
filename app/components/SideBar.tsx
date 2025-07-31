@@ -13,6 +13,8 @@ import {
   faStar,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
+import { cn } from "@/utils/dry";
+import { kaushan, sourceSans3 } from "../fonts";
 type folders = {
   name: string;
   id: string;
@@ -90,7 +92,7 @@ const SideBar = ({
   }, [user?.id]);
 
   return (
-    <section className="flex p-2 gap-8 w-1/5 h-full bg-[#181818] flex-col">
+    <section className="flex gap-8 w-1/5 h-full bg-[#181818]  flex-col">
       <Create isCreating={isCreating} setIsCreating={setIsCreating} />{" "}
       {/* Create component for creating new notes */}
       <Option1 />
@@ -99,7 +101,7 @@ const SideBar = ({
          * Folder Section
          */}
         <div className="flex  justify-between">
-          <span>Folders </span>
+          <span className="p-2">Folders </span>
           {isSearch && (
             <span>
               <FontAwesomeIcon icon={faFolderOpen} />
@@ -117,22 +119,24 @@ const SideBar = ({
             />
           </span>
         </div>
-        <div className="text-amber-50 w-full overflow-auto flex flex-col">
+        <div
+          className={`${sourceSans3.className} text-amber-50 w-full overflow-auto flex flex-col`}
+        >
           {folders.map((folder, i) => (
             <span
-              className="hover:bg-[#232323] p-1"
-              onClick={() => {
-                if (isclicked || isclick) {
-                  setIsClick(false); // Reset isClick state when isclicked and isclick are true
-                  setisClicked(false); // Reset isClicked state when isclicked and isclick are true
-                }
-                setOpenFolderId(openFolderId === folder.id ? null : folder.id);
-                setId(folder.id); // Set the folder ID when clicked
-                setIsClick(!isclick); // Set isClick to true when a folder is clicked
-                setisClicked(!isclicked); // Set isClicked to true when a folder is clicked
-              }}
-              key={i}
+              key={folder.id}
               id={folder.id}
+              className={cn(
+                "hover:bg-[#232323] p-1 transition-colors cursor-pointer flex items-center",
+                openFolderId === folder.id && "bg-blue-800"
+              )}
+              onClick={() => {
+                setIsClick(!isclick);
+                setisClicked(!isclicked);
+                const isSameFolder = openFolderId === folder.id;
+                setOpenFolderId(isSameFolder ? null : folder.id);
+                setId(folder.id); // if you still need it
+              }}
             >
               {openFolderId === folder.id ? (
                 <FontAwesomeIcon icon={faFolderOpen} className="mx-1.5" />
@@ -145,24 +149,33 @@ const SideBar = ({
         </div>
       </article>
       <article className="h-1/3 my-3.5 gap-3 flex flex-col text-[#fcfcfc]">
-        <span>More</span>
+        <span className="p-2">More</span>
         <div className="flex flex-col">
           <p
             onClick={() => setIsClickedFav(!isClickedFav)}
-            className="hover:bg-[#232323] transition-colors p-1"
+            className={cn(
+              "hover:bg-[#232323] transition-colors p-1 rounded",
+              isClickedFav ? "bg-blue-800" : ""
+            )}
           >
             <FontAwesomeIcon icon={faStar} className="mx-2 " /> Favorites
           </p>
           <p
             onClick={() => setIsClickedArch(!isClickedArch)}
-            className="hover:bg-[#232323] transition-colors p-1"
+            className={cn(
+              "hover:bg-[#232323] transition-colors p-1 rounded",
+              isClickedArch ? "bg-blue-800" : ""
+            )}
           >
             <FontAwesomeIcon className="mx-2" icon={faArchive} />
             Archived
           </p>
           <p
             onClick={() => setIsClickedTrach(!isClickedTrach)}
-            className="hover:bg-[#232323] transition-colors p-1"
+            className={cn(
+              "hover:bg-[#232323] transition-colors p-1 rounded",
+              isClickedTrach ? "bg-blue-800" : ""
+            )}
           >
             <FontAwesomeIcon className="mx-2" icon={faTrashCan} /> Trach
           </p>

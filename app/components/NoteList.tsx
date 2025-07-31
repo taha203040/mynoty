@@ -1,5 +1,5 @@
 // "use server"
-import { getnotes } from "@/utils";
+import { getFolder, getnotes } from "@/utils";
 import { useUser } from "@clerk/nextjs";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -25,32 +25,45 @@ export const NoteList = ({
   isClick: boolean;
   setNoteId: (val: any) => void;
 }) => {
+  const [foldername, setfoldername] = useState("");
   const [notes, setnotes] = useState<Note[]>([]);
   const { user } = useUser();
-
+  useEffect(() => {}, [folder_id]);
   useEffect(() => {
     const fetchNotes = async () => {
       try {
         const res = await getnotes({ folderid: folder_id, userid: user?.id });
         setnotes(res);
+        // console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const fetchFolders = async () => {
+      try {
+        const res = await getFolder({ folderid: folder_id });
+        if (res) setfoldername(res.name);
       } catch (err) {
         console.log(err);
       }
     };
     fetchNotes();
+    fetchFolders();
   }, [folder_id]);
 
   return (
-    <>
+    
       <article className="w-1/5 overflow-y-auto bg-[#1c1c1c] h-full flex flex-col relative p-8 ">
-        <p className="text-[#fcfcfc] py-5 font-bold text-xl  top-0">Personal</p>
+        <p className="text-[#fcfcfc] py-5 font-bold text-xl  top-0">
+          {foldername}
+        </p>
 
         <div className="gap-3 flex flex-col">
           {isClick &&
             notes.map((note, id) => (
               <div
                 key={id}
-                className="bg-[#232323] p-3 rounded-md text-[#fcfcfc] cursor-pointer hover:bg-[#2c2c2c] transition-all"
+                className="bg-[#232323] relative h-[90px] flex flex-col p-2 text-[#fcfcfc] cursor-pointer hover:bg-[#2c2c2c] transition-all"
                 onClick={() => {
                   setNoteId(note.id); // Set the note ID when clicked
                 }}
@@ -58,11 +71,16 @@ export const NoteList = ({
                 <h3 className="text-lg font-semibold">
                   {note.title.slice(0, 10)}
                 </h3>
-                <p className="text-sm">{note.content.slice(0, 20)}...</p>
+                <p className="text-sm absolute bottom-4">
+                  <span className="text-[#a3a3a3] ">
+                    {note.created_at.slice(0, 10)}
+                  </span>
+                  {note.content.slice(0, 20)}...
+                </p>
               </div>
             ))}
         </div>
       </article>
-    </>
+  
   );
 };

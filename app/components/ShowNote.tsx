@@ -1,13 +1,6 @@
-import { BoldIcon } from "@/components/tiptap-icons/bold-icon";
-import { ItalicIcon } from "@/components/tiptap-icons/italic-icon";
-import { Button } from "@/components/tiptap-ui-primitive/button";
-import { Spacer } from "@/components/tiptap-ui-primitive/spacer";
+"use client";
 import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-} from "@/components/tiptap-ui-primitive/toolbar";
-import {
+  addToRecent,
   getFolder,
   getNoteById,
   updateArchived,
@@ -15,19 +8,18 @@ import {
   updateNoteById,
   updateTrach,
 } from "@/utils";
+import { useUser } from "@clerk/nextjs";
 import {
   faArchive,
   faBars,
   faCalendar,
   faFolder,
-  faMarsAndVenus,
   faStar,
-  faStarAndCrescent,
-  faStarHalfStroke,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 interface prop {
   noteId: string;
 }
@@ -37,6 +29,7 @@ type Note = {
   id: string;
   created_at: string;
   folder_id: string;
+  user_id: string;
 };
 const ShowNote = ({ noteId }: prop) => {
   const [content, setContent] = useState("");
@@ -49,8 +42,11 @@ const ShowNote = ({ noteId }: prop) => {
   const [folder, setFolder] = useState("");
   const [folderid, setFolderid] = useState("");
   const [isFav, setFav] = useState(false);
-
+  const { user } = useUser();
+  console.log(user);
+  console.log(note);
   useEffect(() => {
+    if (!user) return;
     const handlegetData = async () => {
       try {
         const res = await getNoteById({ noteId: noteId });
@@ -61,7 +57,6 @@ const ShowNote = ({ noteId }: prop) => {
           setDate(res.created_at.slice(0, 10));
           setFolderid(res.folder_id);
         }
-        console.log(folderid, "id");
       } catch (err) {
         console.log(err as Error);
       }
@@ -69,10 +64,19 @@ const ShowNote = ({ noteId }: prop) => {
 
     handlegetData();
   }, []);
+  console.log(note);
   useEffect(() => {
-    if (folderid) {
-      console.log(folderid, "updated folderid");
-    }
+    if (!note || !user?.id) return;
+
+    const addNoteToRecent = async () => {
+      try {
+        await addToRecent({ userId: note.user_id, noteId: note.id });
+      } catch (err) {
+        console.error("❌ Failed to add to recent notes:", err);
+      }
+    };
+
+    addNoteToRecent();
   }, [folderid]);
 
   useEffect(() => {
@@ -170,9 +174,9 @@ const ShowNote = ({ noteId }: prop) => {
   return (
     <section className="w-full gap-5 h-screen flex flex-col">
       <div className="text-2xl flex justify-between">
-        <span>{title}</span>
+        <span className="text-3xl">{title}</span>
 
-        <span className="  gap-8 ">
+        <span className="gap-8">
           <FontAwesomeIcon
             icon={faBars}
             className="text-[#fcfcfc] text-2xl"
@@ -182,15 +186,15 @@ const ShowNote = ({ noteId }: prop) => {
       </div>
       {clicked ? (
         // <span className="flex justify-end z-1">
-        <div className="bg-[#1c1c1c] absolute p-2  rounded flex transition-transform flex-col gap-2 right-13 top-40 ">
+        <div className="bg-[#1c1c1c] absolute p-1 rounded flex transition-all flex-col gap-2 right-13 top-30 ">
           <p
-            className="text-xs p-3 w-full hover:bg-[#232323]"
+            className="text-xs p-2 w-full hover:bg-[#232323]  transition-colors"
             onClick={() => setFav(!isFav)}
           >
             <FontAwesomeIcon className="mx-2" icon={faStar} /> Add To Favorite
           </p>
           <p
-            className="text-xs p-3  w-full hover:bg-[#232323]"
+            className="text-xs p-2  w-full hover:bg-[#232323] transition-colors"
             onClick={() => setArch(!isArch)}
           >
             {" "}
@@ -198,7 +202,7 @@ const ShowNote = ({ noteId }: prop) => {
           </p>
           <hr className="border-[#333333]" />
           <p
-            className="text-xs p-3 w-full hover:bg-[#232323]"
+            className="text-xs p-2 w-full hover:bg-[#232323] transition-colors"
             onClick={() => setTrch(!isTrch)}
           >
             <FontAwesomeIcon className="mx-2" icon={faTrashCan} /> Delete
@@ -221,36 +225,15 @@ const ShowNote = ({ noteId }: prop) => {
           <span className="underline"> {folder}</span>{" "}
         </h1>
         <hr className="border-[#333333]" />
-        <Toolbar variant="fixed">
-          <ToolbarGroup>
-            <Button data-style="ghost">
-              <BoldIcon className="tiptap-button-icon" />
-            </Button>
-            <Button data-style="ghost">
-              <ItalicIcon className="tiptap-button-icon" />
-            </Button>
-          </ToolbarGroup>
-
-          <ToolbarSeparator />
-
-          <ToolbarGroup>
-            <Button data-style="ghost">Format</Button>
-          </ToolbarGroup>
-
-          <Spacer />
-
-          <ToolbarGroup>
-            <Button data-style="primary">Save</Button>
-          </ToolbarGroup>
-        </Toolbar>
-        <hr className="border-[#333333]" />
+        {/* @ts-ignore */}
       </div>
-      <textarea
+      {/* <textarea
         className="outline-none scroll-m-3.5 resize-none w-full h-full "
         onChange={(e) => setContent(e.target.value)}
         value={content}
         cols={40}
-      />
+      /> */}
+      <SimpleEditor content={content} />
     </section>
   );
 };

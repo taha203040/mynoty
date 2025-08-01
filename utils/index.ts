@@ -13,7 +13,8 @@ export const createNote = async (inputData: {
 
     const { data, error } = await supabase
         .from("notes")
-        .insert([inputData])  // يجب أن تكون داخل مصفوفة
+        .insert([inputData])  // يجب أن تكون داخل 
+    // مصفوفة
 
     if (error || !data) {
         throw new Error(error?.message || "Failed to insert note");
@@ -102,7 +103,7 @@ export const getFolder = async ({ folderid }: { folderid: string }) => {
         console.log(error, 'err')
     }
     if (data) {
-        console.log(data[0], 'data')
+        console.log(data[0])
         return data[0]
     }
 }
@@ -124,21 +125,107 @@ export const updateTrach = async ({ noteId, is_trashed }: { noteId: string; is_t
     if (!data || error) throw new Error(error.message)
     return data[0]
 }
-export const listFavorites = async () => {
+export const listFavorites = async ({ userid }: { userid: string }) => {
     const supabase = await createSupabaseClient()
-    const { data, error } = await supabase.from('notes').select("*").eq('is_favorite', true)
+    const { data, error } = await supabase.from('notes').select("*").eq('is_favorite', true).eq("user_id", userid)
     if (!data || error) throw new Error(error.message)
     return data
 }
-export const listArchives = async () => {
+export const listArchives = async ({ userid }: { userid: string }) => {
     const supabase = await createSupabaseClient()
     const { data, error } = await supabase.from('notes').select("*").eq('is_archived', true)
-    if (!data || error) throw new Error(error.message)
-    return data[0]
+    if (error) {
+        throw new Error(error.message);
+    } if (data) return data
+
 }
-export const listTrach = async () => {
+export const listTrach = async ({ userid }: { userid: string }) => {
     const supabase = await createSupabaseClient()
-    const { data, error } = await supabase.from('notes').select("*").eq('is_trashed', true)
+    const { data, error } = await supabase.from('notes').select("*").eq('is_trashed', true).eq("user_id", userid)
     if (!data || error) throw new Error(error.message)
     return data
 }
+
+
+export const searchNotes = async ({
+    userId,
+    searchTerm,
+}: {
+    userId: string;
+    searchTerm: string;
+}) => {
+    const supabase = await createSupabaseClient();
+
+    const { data, error } = await supabase
+        .from("notes")
+        .select("*")
+        .eq("user_id", userId)
+        .or(
+            `title.ilike.%${searchTerm}%,content.ilike.%${searchTerm}%`
+        )
+        .order("created_at", { ascending: false }); // ترتيب النتائج حسب آخر تحديث
+
+    if (error) {
+        throw new Error(error.message || "Search failed");
+    }
+
+    return data;
+};
+
+export const getRecentNotes = async ({
+    userId,
+}: {
+    userId: string;
+}) => {
+    const supabase = await createSupabaseClient();
+
+    const { data, error } = await supabase
+        .from("Session_Notes")
+        .select(`
+      note_id,
+      created_at,
+      notes (
+        id,
+        title,
+        content,
+        created_at
+      )
+    `)
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false }).limit(5)
+
+    if (error) {
+        console.error("❌ Failed to fetch recent notes:", error);
+        throw new Error(error.message || "فشل في جلب الملاحظات الحديثة.");
+    }
+
+    // لإرجاع الملاحظات فقط (بدون بيانات Session_Notes نفسها)
+    return data.map((item)=>(item.notes))
+};
+
+export const addToRecent = async ({
+    noteId,
+    userId,
+}: {
+    noteId: string;
+    userId: string;
+}) => {
+    const supabase = await createSupabaseClient();
+
+    const { data, error } = await supabase
+        .from("Session_Notes")
+        .insert([
+            {
+                note_id: noteId,
+                user_id: userId,
+            },
+        ])
+        .select("*"); // جلب السجل بعد الإدخال
+
+    if (error) {
+        console.error("❌ Supabase Insert Error:", error);
+        throw new Error("فشل في إضافة الملاحظة إلى السجل الحديث.");
+    }
+
+    return data;
+};

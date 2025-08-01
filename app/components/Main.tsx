@@ -17,7 +17,6 @@ interface Prop {
 }
 const Main = ({
   isCreating,
-  isClicked,
   NoteId,
   folderId,
   isClickedFav,
@@ -28,7 +27,7 @@ const Main = ({
     <section className="bg-[#181818] overflow-auto p-6 ap-5 w-3/5 h-screen text-white flex flex-col">
       {isCreating ? (
         <CreateNote folderid={folderId} />
-      ) : isClicked && NoteId ? (
+      ) : folderId && NoteId ? (
         <ShowNote noteId={NoteId} />
       ) : isClickedFav ? (
         <FavoriteP />

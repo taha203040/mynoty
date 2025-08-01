@@ -6,13 +6,7 @@
       "attrs": {
         "textAlign": null,
         "level": 1
-      },
-      "content": [
-        {
-          "type": "text",
-          "text": "Getting started"
-        }
-      ]
+      }
     },
     {
       "type": "paragraph",
@@ -22,7 +16,7 @@
       "content": [
         {
           "type": "text",
-          "text": "Welcome to the "
+          "text": ""
         },
         {
           "type": "text",
@@ -98,7 +92,7 @@
         },
         {
           "type": "text",
-          "text": " or using our CLI tool."
+          "text": ""
         }
       ]
     },
@@ -217,7 +211,7 @@
         },
         {
           "type": "text",
-          "text": " to make your writing more engaging and professional."
+          "text": ""
         }
       ]
     },
@@ -395,7 +389,7 @@
       "content": [
         {
           "type": "text",
-          "text": "Make it your own"
+          "text": ""
         }
       ]
     },
@@ -459,7 +453,7 @@
                       }
                     }
                   ],
-                  "text": "Integrate the free template"
+                  "text": ""
                 }
               ]
             }

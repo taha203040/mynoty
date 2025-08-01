@@ -1,5 +1,5 @@
 import React from "react";
-import Create, { CreatingOr } from "./Create";
+import Create from "./Create";
 import { useState, useEffect } from "react";
 import { Option1 } from "./Options";
 import { useUser } from "@clerk/nextjs";
@@ -92,11 +92,13 @@ const SideBar = ({
   }, [user?.id]);
 
   return (
-    <section className="flex gap-8 w-1/5 h-full bg-[#181818]  flex-col">
+    <section
+      className={`flex gap-8 w-1/5 h-full bg-[#181818]  flex-col ${sourceSans3.className} text-[#a3a3a3] `}
+    >
       <Create isCreating={isCreating} setIsCreating={setIsCreating} />{" "}
       {/* Create component for creating new notes */}
       <Option1 />
-      <article className="h-1/2 w-full  text-[#fcfcfc]">
+      <article className="h-1/2 w-full ">
         {/**
          * Folder Section
          */}
@@ -119,16 +121,14 @@ const SideBar = ({
             />
           </span>
         </div>
-        <div
-          className={`${sourceSans3.className} text-amber-50 w-full overflow-auto flex flex-col`}
-        >
+        <div className={` w-full overflow-auto flex flex-col`}>
           {folders.map((folder, i) => (
             <span
               key={folder.id}
               id={folder.id}
               className={cn(
                 "hover:bg-[#232323] p-1 transition-colors cursor-pointer flex items-center",
-                openFolderId === folder.id && "bg-blue-800"
+                openFolderId === folder.id && "bg-blue-800 text-[#fcfcfc]"
               )}
               onClick={() => {
                 setIsClick(!isclick);
@@ -148,7 +148,7 @@ const SideBar = ({
           ))}
         </div>
       </article>
-      <article className="h-1/3 my-3.5 gap-3 flex flex-col text-[#fcfcfc]">
+      <article className="h-1/3 my-3.5 gap-3 flex flex-col ">
         <span className="p-2">More</span>
         <div className="flex flex-col">
           <p

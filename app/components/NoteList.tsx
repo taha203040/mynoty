@@ -19,7 +19,6 @@ interface Props {
 
 export const NoteList = ({
   folder_id,
-  isClick,
   setNoteId,
 }: {
   folder_id: string;
@@ -60,24 +59,23 @@ export const NoteList = ({
       </p>
 
       {/* <div className="gap-3 flex flex-col"> */}
-      {isClick &&
-        notes.map((note, id) => (
-          <div
-            key={id}
-            className="bg-[#232323] transition-color relative h-[90px] mx-5 flex flex-col p-4 text-[#fcfcfc] cursor-pointer hover:bg-[#2c2c2c] transition-colors rounded "
-            onClick={() => {
-              setNoteId(note.id); // Set the note ID when clicked
-            }}
-          >
-            <h3 className="text-lg font-semibold">{note.title.slice(0, 10)}</h3>
-            <p className="text-sm absolute bottom-4">
-              <span className="text-[#a3a3a3] ">
-                {note.created_at.slice(0, 10)}
-              </span>
-              <span className="mx-2">{note.content.slice(0, 20)}...</span>
-            </p>
-          </div>
-        ))}
+      {notes.map((note, id) => (
+        <div
+          key={id}
+          className="bg-[#232323] transition-color relative h-[90px] mx-5 flex flex-col p-4 text-[#fcfcfc] cursor-pointer hover:bg-[#2c2c2c] transition-colors rounded "
+          onClick={() => {
+            setNoteId(note.id); // Set the note ID when clicked
+          }}
+        >
+          <h3 className="text-lg font-semibold">{note.title.slice(0, 10)}</h3>
+          <p className="text-sm absolute bottom-4">
+            <span className="text-[#a3a3a3] ">
+              {note.created_at.slice(0, 10)}
+            </span>
+            <span className="mx-2">{note.content.slice(0, 20)}...</span>
+          </p>
+        </div>
+      ))}
       {/* </div> */}
     </article>
   );

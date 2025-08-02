@@ -21,34 +21,10 @@ type folders = {
 };
 interface SideBarProps {
   isCreating: boolean;
-  isclicked?: boolean; // Optional prop for isclicked, not used in this component
-  isclick?: boolean; // Optional prop for isclick, not used in this component
   setIsCreating: (val: boolean) => void;
   setId: (id: string) => void;
-  setIsClick: (val: boolean) => void; // Added setIsClick prop
-  setisClicked: (val: boolean) => void; // Function to set isClicked state
-  setIsClickedArch: (val: boolean) => void;
-  setIsClickedFav: (val: boolean) => void;
-  setIsClickedTrach: (val: boolean) => void;
-  isClickedArch: boolean;
-  isClickedTrach: boolean;
-  isClickedFav: boolean;
 }
-const SideBar = ({
-  setIsClickedArch,
-  setIsClickedTrach,
-  setIsClickedFav,
-  setisClicked,
-  setIsCreating,
-  setId,
-  setIsClick,
-  isClickedTrach,
-  isClickedFav,
-  isClickedArch,
-  isCreating,
-  isclick,
-  isclicked,
-}: SideBarProps) => {
+const SideBar = ({ setIsCreating, setId, isCreating }: SideBarProps) => {
   // folder part code
   const [isSearch, setisSearch] = useState(false);
   const [foldr, setfolder] = useState("");
@@ -131,8 +107,6 @@ const SideBar = ({
                 openFolderId === folder.id && "bg-blue-800 text-[#fcfcfc]"
               )}
               onClick={() => {
-                setIsClick(!isclick);
-                setisClicked(!isclicked);
                 const isSameFolder = openFolderId === folder.id;
                 setOpenFolderId(isSameFolder ? null : folder.id);
                 setId(folder.id); // if you still need it
@@ -152,29 +126,26 @@ const SideBar = ({
         <span className="p-2">More</span>
         <div className="flex flex-col">
           <p
-            onClick={() => setIsClickedFav(!isClickedFav)}
             className={cn(
               "hover:bg-[#232323] transition-colors p-1 rounded",
-              isClickedFav ? "bg-blue-800" : ""
+              //  ? "bg-blue-800" : ""
             )}
           >
             <FontAwesomeIcon icon={faStar} className="mx-2 " /> Favorites
           </p>
           <p
-            onClick={() => setIsClickedArch(!isClickedArch)}
             className={cn(
               "hover:bg-[#232323] transition-colors p-1 rounded",
-              isClickedArch ? "bg-blue-800" : ""
+              //  ? "bg-blue-800" : ""
             )}
           >
             <FontAwesomeIcon className="mx-2" icon={faArchive} />
             Archived
           </p>
           <p
-            onClick={() => setIsClickedTrach(!isClickedTrach)}
             className={cn(
               "hover:bg-[#232323] transition-colors p-1 rounded",
-              isClickedTrach ? "bg-blue-800" : ""
+              //  ? "bg-blue-800" : ""
             )}
           >
             <FontAwesomeIcon className="mx-2" icon={faTrashCan} /> Trach

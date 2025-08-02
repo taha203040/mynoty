@@ -185,7 +185,6 @@ const ShowNote = ({ noteId }: prop) => {
         </span>
       </div>
       {clicked ? (
-        // <span className="flex justify-end z-1">
         <div className="bg-[#1c1c1c] absolute p-1 rounded flex transition-all flex-col gap-2 right-13 top-30 ">
           <p
             className="text-xs p-2 w-full hover:bg-[#232323]  transition-colors"
@@ -209,7 +208,6 @@ const ShowNote = ({ noteId }: prop) => {
           </p>
         </div>
       ) : (
-        // </span>
         <></>
       )}
 
@@ -225,7 +223,6 @@ const ShowNote = ({ noteId }: prop) => {
           <span className="underline"> {folder}</span>{" "}
         </h1>
         <hr className="border-[#333333]" />
-        {/* @ts-ignore */}
       </div>
       {/* <textarea
         className="outline-none scroll-m-3.5 resize-none w-full h-full "

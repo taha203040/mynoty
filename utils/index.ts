@@ -97,16 +97,23 @@ export const getFolder = async ({ folderid }: { folderid: string }) => {
     if (!folderid || folderid.trim() === "") {
         throw new Error("Invalid folder ID");
     }
-    const supabase = await createSupabaseClient()
-    const { data, error } = await supabase.from('folders').select("id,name").eq('id', folderid)
-    if (!data || error) {
-        console.log(error, 'err')
+
+    const supabase = await createSupabaseClient();
+
+    const { data, error } = await supabase
+        .from('folders')
+        .select("id,name")
+        .eq('id', folderid)
+        .single(); // تفيد بأنك تتوقع صفًا واحدًا فقط
+
+    if (error) {
+        console.error("Supabase error:", error.message);
+        throw new Error("Error fetching folder data.");
     }
-    if (data) {
-        console.log(data[0])
-        return data[0]
-    }
+
+    return data; // ستكون عبارة عن كائن وليس مصفوفة
 }
+
 export const updateFavorite = async ({ noteId, is_favorite }: { noteId: string; is_favorite: boolean }) => {
     const supabase = await createSupabaseClient()
     const { data, error } = await supabase.from('notes').update({ is_favorite }).eq("id", noteId).select("*")
@@ -200,7 +207,7 @@ export const getRecentNotes = async ({
     }
 
     // لإرجاع الملاحظات فقط (بدون بيانات Session_Notes نفسها)
-    return data.map((item)=>(item.notes))
+    return data.map((item) => (item.notes))
 };
 
 export const addToRecent = async ({
@@ -224,8 +231,10 @@ export const addToRecent = async ({
 
     if (error) {
         console.error("❌ Supabase Insert Error:", error);
-        throw new Error("فشل في إضافة الملاحظة إلى السجل الحديث.");
+        throw new Error("Faild Add recent ");
     }
 
     return data;
 };
+
+

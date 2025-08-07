@@ -12,7 +12,11 @@ type Note = {
   note_id: string;
 };
 
-export const Option1 = () => {
+export const Option1 = ({ setNoteId, noteId, setActiveSection }: {
+  setNoteId: (id: string) => void;
+  noteId: string | null;
+  setActiveSection: (section: string) => void;
+}) => {
   const { user } = useUser();
   const [notes, setNotes] = useState<Note[]>([]);
   useEffect(() => {
@@ -21,10 +25,17 @@ export const Option1 = () => {
     const handleGetRecent = async () => {
       try {
         const res = await getRecentNotes({ userId: user.id });
-        // console.log(res, "data");
         if (res) {
-          // @ts-ignore
-          setNotes(res);
+          // Flatten and normalize to Note type
+          const flat = Array.isArray(res[0]) ? res.flat() : res;
+          const normalized = flat.map((n: any) => ({
+            id: n.id,
+            title: n.title,
+            content: n.content,
+            created_at: n.created_at,
+            note_id: n.id, // fallback if note_id missing
+          }));
+          setNotes(normalized);
         }
       } catch (err) {
         console.log("Failed to get recent notes", err);
@@ -42,7 +53,13 @@ export const Option1 = () => {
         )}
         {notes.map((note, i) => (
           <div key={i} className="flex items-center gap-2 text-[#a3a3a3]">
-            <span className="hover:bg-[#232323] p-1 w-full transition-colors cursor-pointer flex items-center">
+            <span
+              className={`hover:bg-[#232323] p-1 w-full transition-colors cursor-pointer flex items-center rounded ${noteId === note.id ? "ring-2 ring-blue-400" : ""}`}
+              onClick={() => {
+                setActiveSection("recent");
+                setNoteId(note.id);
+              }}
+            >
               <FontAwesomeIcon
                 icon={faFile}
                 className=" text-[#a3a3a3] mx-1.5"

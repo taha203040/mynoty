@@ -8,32 +8,29 @@ import ArchivedP from "./Archived";
 import Trach from "./Trach";
 interface Prop {
   isCreating: boolean;
-  isClicked?: boolean;
-  NoteId?: any;
+  activeSection: string;
   folderId: string;
-  isClickedFav: boolean;
-  isClickedTrach?: boolean;
-  isClickedArch?: boolean;
+  noteId: string | null;
+  setNoteId: (id: string | null) => void;
 }
 const Main = ({
   isCreating,
-  NoteId,
+  activeSection,
   folderId,
-  isClickedFav,
-  isClickedArch,
-  isClickedTrach,
+  noteId,
+  setNoteId,
 }: Prop) => {
   return (
     <section className="bg-[#181818] overflow-auto p-6 ap-5 w-3/5 h-screen text-white flex flex-col">
       {isCreating ? (
         <CreateNote folderid={folderId} />
-      ) : folderId && NoteId ? (
-        <ShowNote noteId={NoteId} />
-      ) : isClickedFav ? (
+      ) : (activeSection === "folders" || activeSection === "recent") && noteId ? (
+        <ShowNote noteId={noteId} />
+      ) : activeSection === "favorites" ? (
         <FavoriteP />
-      ) : isClickedArch ? (
+      ) : activeSection === "archived" ? (
         <ArchivedP />
-      ) : isClickedTrach ? (
+      ) : activeSection === "trach" ? (
         <Trach />
       ) : (
         <Default />

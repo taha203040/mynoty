@@ -2,42 +2,42 @@
 import Main from "./components/Main";
 import { NoteList } from "./components/NoteList";
 import SideBar from "./components/SideBar";
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 export default function Home() {
   const [isCreating, setIsCreating] = useState(false);
-  const [isClicked, setisClicked] = useState(false);
-  const [isClick, setIsClick] = useState(false);
-  const [noteID, setNoteId] = useState<string | null>(null);
+  const [noteId, setNoteId] = useState<string | null>(null);
   const [folderid, setId] = useState("");
-  const [isClickedFav, setIsClickedFav] = useState(false);
-  const [isClickedTrach, setIsClickedTrach] = useState(false);
-  const [isClickedArch, setIsClickedArch] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("recent"); // default to recent
+
+  // Reset noteId when switching section or folder
+  useEffect(() => {
+    setNoteId(null);
+  }, [activeSection, folderid]);
 
   return (
     <div className="w-full h-screen flex">
       <SideBar
-        isClickedFav={isClickedFav}
-        isClickedTrach={isClickedTrach}
-        isClickedArch={isClickedArch}
-        setId={setId}
+        setId={(id) => {
+          setId(id);
+          setActiveSection("folders");
+        }}
         isCreating={isCreating}
-        isclick={isClick}
         setIsCreating={setIsCreating}
-        setIsClick={setIsClick}
-        setisClicked={setisClicked}
-        setIsClickedTrach={setIsClickedTrach}
-        setIsClickedFav={setIsClickedFav}
-        setIsClickedArch={setIsClickedArch}
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
       />
-      <NoteList setNoteId={setNoteId} folder_id={folderid} isClick={isClick} />
+      <NoteList 
+        setNoteId={setNoteId} 
+        folder_id={folderid} 
+        isClick={true} 
+        noteId={noteId} 
+      />
       <Main
-        isClickedTrach={isClickedTrach}
-        isClickedArch={isClickedArch}
-        isClickedFav={isClickedFav}
+        activeSection={activeSection}
         folderId={folderid}
-        NoteId={noteID}
+        noteId={noteId}
         isCreating={isCreating}
-        isClicked={isClicked}
+        setNoteId={setNoteId}
       />
     </div>
   );

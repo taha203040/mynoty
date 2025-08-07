@@ -23,8 +23,10 @@ interface SideBarProps {
   isCreating: boolean;
   setIsCreating: (val: boolean) => void;
   setId: (id: string) => void;
+  activeSection: string;
+  setActiveSection: (section: string) => void;
 }
-const SideBar = ({ setIsCreating, setId, isCreating }: SideBarProps) => {
+const SideBar = ({ setIsCreating, setId, isCreating, activeSection, setActiveSection }: SideBarProps) => {
   // folder part code
   const [isSearch, setisSearch] = useState(false);
   const [foldr, setfolder] = useState("");
@@ -73,7 +75,7 @@ const SideBar = ({ setIsCreating, setId, isCreating }: SideBarProps) => {
     >
       <Create isCreating={isCreating} setIsCreating={setIsCreating} />{" "}
       {/* Create component for creating new notes */}
-      <Option1 />
+      <Option1 setNoteId={setId} noteId={null} setActiveSection={setActiveSection} />
       <article className="h-1/2 w-full ">
         {/**
          * Folder Section
@@ -104,12 +106,13 @@ const SideBar = ({ setIsCreating, setId, isCreating }: SideBarProps) => {
               id={folder.id}
               className={cn(
                 "hover:bg-[#232323] p-1 transition-colors cursor-pointer flex items-center",
-                openFolderId === folder.id && "bg-blue-800 text-[#fcfcfc]"
+                openFolderId === folder.id && activeSection === "folders" && "bg-blue-800 text-[#fcfcfc]"
               )}
               onClick={() => {
+                setActiveSection("folders");
                 const isSameFolder = openFolderId === folder.id;
                 setOpenFolderId(isSameFolder ? null : folder.id);
-                setId(folder.id); // if you still need it
+                setId(folder.id);
               }}
             >
               {openFolderId === folder.id ? (
@@ -127,29 +130,32 @@ const SideBar = ({ setIsCreating, setId, isCreating }: SideBarProps) => {
         <div className="flex flex-col">
           <p
             className={cn(
-              "hover:bg-[#232323] transition-colors p-1 rounded",
-              //  ? "bg-blue-800" : ""
+              "hover:bg-[#232323] transition-colors p-1 rounded cursor-pointer flex items-center",
+              activeSection === "favorites" && "bg-blue-800 text-[#fcfcfc]"
             )}
+            onClick={() => setActiveSection("favorites")}
           >
-            <FontAwesomeIcon icon={faStar} className="mx-2 " /> Favorites
+            <FontAwesomeIcon icon={faStar} className="mx-2" /> Favorites
           </p>
           <p
             className={cn(
-              "hover:bg-[#232323] transition-colors p-1 rounded",
-              //  ? "bg-blue-800" : ""
+              "hover:bg-[#232323] transition-colors p-1 rounded cursor-pointer flex items-center",
+              activeSection === "archived" && "bg-blue-800 text-[#fcfcfc]"
             )}
+            onClick={() => setActiveSection("archived")}
           >
-            <FontAwesomeIcon className="mx-2" icon={faArchive} />
-            Archived
+            <FontAwesomeIcon className="mx-2" icon={faArchive} /> Archived
           </p>
           <p
             className={cn(
-              "hover:bg-[#232323] transition-colors p-1 rounded",
-              //  ? "bg-blue-800" : ""
+              "hover:bg-[#232323] transition-colors p-1 rounded cursor-pointer flex items-center",
+              activeSection === "trach" && "bg-blue-800 text-[#fcfcfc]"
             )}
+            onClick={() => setActiveSection("trach")}
           >
             <FontAwesomeIcon className="mx-2" icon={faTrashCan} /> Trach
           </p>
+         
         </div>
       </article>
     </section>

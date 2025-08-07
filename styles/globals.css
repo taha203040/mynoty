@@ -1,0 +1,23 @@
+/* Modern, light, convenient scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #33374d;
+  border-radius: 8px;
+  border: 2px solid #232323;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6c47ff;
+}
+::-webkit-scrollbar-track {
+  background: #181818;
+  border-radius: 8px;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #33374d #181818;
+}

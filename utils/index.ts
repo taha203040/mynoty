@@ -135,22 +135,20 @@ export const updateTrach = async ({ noteId, is_trashed }: { noteId: string; is_t
 export const listFavorites = async ({ userid }: { userid: string }) => {
     const supabase = await createSupabaseClient()
     const { data, error } = await supabase.from('notes').select("*").eq('is_favorite', true).eq("user_id", userid)
-    if (!data || error) throw new Error(error.message)
-    return data
+    if (error) throw new Error(error.message)
+    return data || []
 }
 export const listArchives = async ({ userid }: { userid: string }) => {
     const supabase = await createSupabaseClient()
-    const { data, error } = await supabase.from('notes').select("*").eq('is_archived', true)
-    if (error) {
-        throw new Error(error.message);
-    } if (data) return data
-
+    const { data, error } = await supabase.from('notes').select("*").eq('is_archived', true).eq("user_id", userid)
+    if (error) throw new Error(error.message)
+    return data || []
 }
 export const listTrach = async ({ userid }: { userid: string }) => {
     const supabase = await createSupabaseClient()
     const { data, error } = await supabase.from('notes').select("*").eq('is_trashed', true).eq("user_id", userid)
-    if (!data || error) throw new Error(error.message)
-    return data
+    if (error) throw new Error(error.message)
+    return data || []
 }
 
 

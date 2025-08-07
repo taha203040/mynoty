@@ -46,7 +46,7 @@ const ShowNote = ({ noteId }: prop) => {
   console.log(user);
   console.log(note);
   useEffect(() => {
-    if (!user) return;
+    if (!user || !noteId) return;
     const handlegetData = async () => {
       try {
         const res = await getNoteById({ noteId: noteId });
@@ -61,9 +61,8 @@ const ShowNote = ({ noteId }: prop) => {
         console.log(err as Error);
       }
     };
-
     handlegetData();
-  }, []);
+  }, [user, noteId]);
   console.log(note);
   useEffect(() => {
     if (!note || !user?.id) return;
@@ -224,13 +223,13 @@ const ShowNote = ({ noteId }: prop) => {
         </h1>
         <hr className="border-[#333333]" />
       </div>
-      {/* <textarea
+       <textarea
         className="outline-none scroll-m-3.5 resize-none w-full h-full "
         onChange={(e) => setContent(e.target.value)}
         value={content}
         cols={40}
-      /> */}
-      <SimpleEditor content={content} />
+      /> 
+      {/* <SimpleEditor content={content} /> */}
     </section>
   );
 };

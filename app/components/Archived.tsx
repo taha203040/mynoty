@@ -4,6 +4,7 @@ import { faFile, faTimeline, faTimesCircle } from "@fortawesome/free-solid-svg-i
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useState, useEffect } from "react";
+import NoteActionIcons from "./NoteActionIcons";
 type Notes = {
   title: string;
   content: string;
@@ -27,12 +28,21 @@ const ArchivedP = () => {
     getArchived();
   }, [user]);
 
+  // Placeholder unarchive handler
+  const handleUnarchive = async (noteId: string) => {
+    // TODO: implement actual unarchive logic
+    alert(`Unarchive note ${noteId}`);
+  };
+
   return (
     <section className=" w-full p-5 gap-5 h-screen flex flex-col">
       {archived && archived.length != 0 ? (
-        archived?.map((note, i) => (
-          <div>
-            <span>{note.title}</span>
+        archived.map((note: any, i) => (
+          <div key={i} className="flex flex-col bg-[#232323] rounded p-4 mb-2 relative">
+            <div className="flex justify-between items-center">
+              <span>{note.title}</span>
+              <NoteActionIcons state="archived" onUnarchive={() => handleUnarchive(note.id)} />
+            </div>
             <span>{note.content.slice(0, 10)}...</span>
             <span>{note.created_at.slice(0, 10)}</span>
           </div>
@@ -42,9 +52,7 @@ const ArchivedP = () => {
           className={`flex flex-col justify-center items-center h-full gap-5 text-4xl text-center`}
         >
           <FontAwesomeIcon icon={faTimesCircle} />
-          <h1>There is No archived Notres here
-          </h1>
-         
+          <h1>There is No archived Notres here</h1>
         </section>
       )}
     </section>
